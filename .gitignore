@@ -399,5 +399,7 @@ FodyWeavers.xsd
 .idea/
 *.pyc
 *.egg-info
+/venv
+/.venv
 /env
 /.env
