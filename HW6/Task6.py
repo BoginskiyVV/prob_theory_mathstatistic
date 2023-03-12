@@ -1,5 +1,8 @@
 # Урок 6. Сравнение долей. Построение доверительного интервала
 
+from math import sqrt
+import numpy as np
+import scipy.stats as stats
 
 
 '''
@@ -9,6 +12,16 @@
 0.95,если выборочная средняя M = 80, а объем выборки n = 256.
 '''
 
+M = 80
+n = 256
+alpha = 0.05
+sigma = 16
+
+Z = stats.norm.ppf(1 - (alpha / 2))
+L = M - Z * (sigma / np.sqrt(n))
+U = M + Z * (sigma / np.sqrt(n))
+print(f'Доверителььный интеравал ({round(L, 4)};{round(U, 4)})')
+print('=========================================================================')
 
 
 '''
@@ -19,7 +32,21 @@
 покрывающего это значение с доверительной вероятностью 0,95.
 '''
 
+data = np.array([6.9, 6.1, 6.2, 6.8, 7.5, 6.3, 6.4, 6.9, 6.7, 6.1])
+alpha1 = 0.05
+n = 10
+p = 0.95
 
+D = np.var(data, ddof=1)
+sigma1 = np.sqrt(D)
+M1 = np.mean(data)
+t = stats.t.ppf(p + (1-p) / 2, n - 1)
+# print(D, sigma1, M1, t)
+L1 = M1 - t * np.sqrt(D / n)
+U1 = M1 + t * np.sqrt(D / n)
+# print(L1, U1)
+print(f'Значение величины Х будет принадлежать интервалу ({round(L1, 2)};{round(U1, 2)})')
+print('=========================================================================')
 
 
 '''
@@ -29,4 +56,26 @@
 роста родителей и детей.
 '''
 
+daughters = np.array([175, 167, 154, 174, 178, 148, 160, 167, 169, 170])
+mothers = np.array([178, 165, 165, 173, 168, 155, 160, 164, 178, 175])
+alpha2 = 0.05
+p1 = 0.95
+
+n1 = len(daughters)
+n2 = len(mothers)
+M2 = np.mean(daughters)
+M3 = np.mean(mothers)
+D1 = np.var(daughters,ddof=1)
+D2 = np.var(mothers,ddof=1)
+sigma2 = np.sqrt(D1)
+sigma3 = np.sqrt(D2)
+
+delta = M2-M3
+Se = (D1+D2)/2
+Sd = np.sqrt(Se/n1 + Se/n2)
+t = stats.t.ppf(p1 +(1-p1)/2, 2*(n1-1))
+L2 = delta - t*Sd
+U2 = delta + t*Sd
+print(f'Доверительный интервал ({round(L2, 4)};{round(U2, 4)})')
+print('=========================================================================')
 
